@@ -23,6 +23,7 @@ const AuthPage: React.FC = () => {
     console.log('Email:', data.email);
     console.log('Password:', data.password);
   };
+  
 
   return (
     <>
