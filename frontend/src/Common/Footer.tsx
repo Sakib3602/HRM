@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-[#DCD5C4] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[#8A8272] text-sm">
-            &copy; {currentYear} Genesys HRM. All rights reserved.
+            &copy; {currentYear} Genesys HRM. All rights reserved. Powered by <a href="https://www.genesysltd.com" className="text-[#7FA88F] hover:text-[#E7A33E] transition-colors font-medium">Genesys</a>.
           </p>
           <div className="flex items-center gap-2 text-sm text-[#8A8272]">
             <span>Built for teams who show up <span className="text-[#7FA88F] font-medium">on time</span>.</span>

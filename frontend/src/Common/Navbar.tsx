@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FiPhoneCall, FiMail, FiMenu, FiX, FiChevronDown, FiArrowRight } from 'react-icons/fi';
+import { Link } from 'react-router';
+
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center gap-2.5 cursor-pointer">
+            <div className="shrink-0 flex items-center gap-2.5 cursor-pointer">
               <div className="w-10 h-10 bg-[#101826] rounded flex items-center justify-center text-[#E7A33E] font-bold text-xl" style={{ fontFamily: 'Fraunces, serif' }}>
                 G
               </div>
@@ -53,10 +55,12 @@ const Navbar: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-5">
-              <a href="#" className="text-[#101826] font-medium hover:text-[#E7A33E] transition-colors">Log in</a>
+              
+              <Link to="/get-started">
               <button className="bg-[#101826] hover:bg-[#E7A33E] hover:text-[#101826] text-[#F3EFE6] px-6 py-2.5 rounded font-semibold transition-colors duration-300 flex items-center gap-2">
                 Start free trial <FiArrowRight className="w-4 h-4" />
               </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
