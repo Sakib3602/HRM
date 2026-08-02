@@ -1,0 +1,12 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+# code বাইরে থেকে mount হবে, তাই এখানে COPY . . লাগবে না
+
+EXPOSE 5000
+
+CMD ["npm", "run", "dev"]
