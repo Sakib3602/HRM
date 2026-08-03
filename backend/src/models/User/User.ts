@@ -25,8 +25,10 @@ export interface IUser extends Document {
     stages: IOnboardingStage[];
   };
   pushToken?: string;
-  refreshTokenHash?: string; // বর্তমান valid refresh token এর hash — logout/rotation এ কাজে লাগে
+  refreshTokenHash?: string; 
   createdAt: Date;
+  company?: string;
+  userCreatedBy?: Types.ObjectId;
 }
 
 const onboardingStageSchema = new Schema<IOnboardingStage>(
@@ -55,7 +57,8 @@ const userSchema = new Schema<IUser>({
   },
   pushToken: { type: String, default: "" },
   refreshTokenHash: { type: String, default: null },
-  
+  company: { type: String, default: "" },
+  userCreatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
 },
 { timestamps: true, versionKey: false },
 

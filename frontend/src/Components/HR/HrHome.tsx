@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { 
   FiMenu, 
@@ -16,10 +16,12 @@ import {
   FiMessageCircle,
   FiLogOut
 } from 'react-icons/fi';
+import { AuthContext } from '../../Common/AUTH/AuthProvider';
 
 const HrHome = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('dashboard');
+  const {logOut} = useContext(AuthContext)!;
 
   const menuItems = [
     { id: 'dashboard', icon: <FiGrid size={20} />, label: 'Dashboard' },
@@ -84,7 +86,7 @@ const HrHome = () => {
         </div>
 
         {/* Logout Button */}
-        <div className="p-4 border-t border-gray-200 shrink-0 flex flex-col items-center">
+        <div onClick={()=> logOut()} className="p-4 border-t border-gray-200 shrink-0 flex flex-col items-center">
           <button 
             className={`flex items-center w-full cursor-pointer transition-all duration-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600 ${
               isSidebarOpen ? 'px-4 py-3 rounded-lg' : 'w-12 h-12 justify-center rounded-xl'
