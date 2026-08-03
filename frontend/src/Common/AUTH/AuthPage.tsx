@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import { AuthContext } from './AuthProvider';
+import { useAlert } from '../Alert/useAlert';
+import Alert from '../Alert/Alert';
+
 
 interface LoginFormValues {
   email: string;
@@ -12,6 +17,9 @@ interface LoginFormValues {
 
 const AuthPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useContext(AuthContext)!;
+  const navigate = useNavigate();
+  const { alert, showAlert, hideAlert } = useAlert();
 
   const {
     register,
@@ -19,14 +27,45 @@ const AuthPage: React.FC = () => {
     formState: { errors },
   } = useForm<LoginFormValues>();
 
+  const mutationLogin = useMutation({
+    mutationFn: async ({ email, password }: LoginFormValues) => {
+      await login(email, password);
+    },
+    onSuccess: () => {
+      showAlert({
+        type: 'success',
+        title: 'Welcome back',
+        message: 'Login successful. Redirecting...',
+        duration: 2,
+      });
+      setTimeout(() => navigate('/'), 1200);
+    },
+    onError: () => {
+      showAlert({
+        type: 'error',
+        title: 'Login failed',
+        message: 'Invalid email or password. Please try again.',
+        duration: 4,
+      });
+    },
+  });
+
   const onSubmit = (data: LoginFormValues) => {
-    console.log('Email:', data.email);
-    console.log('Password:', data.password);
+    mutationLogin.mutate(data);
   };
-  
 
   return (
     <>
+      {alert && (
+        <Alert
+          type={alert.type}
+          title={alert.title}
+          message={alert.message}
+          duration={alert.duration}
+          onClose={hideAlert}
+        />
+      )}
+
       <Navbar />
 
       <div className="min-h-screen flex bg-[#16161e] font-sans text-white">
@@ -73,10 +112,7 @@ const AuthPage: React.FC = () => {
               Log in to manage your team.
             </p>
 
-            {/* Form */}
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-
-              {/* Email Field */}
               <div>
                 <input
                   type="email"
@@ -95,7 +131,6 @@ const AuthPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Password Field */}
               <div>
                 <div className="relative">
                   <input
@@ -123,19 +158,18 @@ const AuthPage: React.FC = () => {
                 )}
               </div>
 
-              {/* Forgot password */}
               <div className="flex justify-end">
                 <a href="#" className="text-sm text-purple-400 hover:text-purple-300 transition-colors">
                   Forgot password?
                 </a>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#7148fc] hover:bg-[#5e38d6] text-white font-medium py-3.5 rounded-lg transition-colors mt-4 shadow-lg shadow-purple-900/20"
+                disabled={mutationLogin.isPending}
+                className="w-full bg-[#7148fc] hover:bg-[#5e38d6] disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium py-3.5 rounded-lg transition-colors mt-4 shadow-lg shadow-purple-900/20"
               >
-                Log in
+                {mutationLogin.isPending ? 'Logging in...' : 'Log in'}
               </button>
             </form>
           </div>

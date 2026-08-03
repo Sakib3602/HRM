@@ -13,8 +13,8 @@ import { User } from "../models/User/User";
 const run = async () => {
   await connectDB();
 
-  const email = "sakibs@gmail.com";
-  const plainPassword = "sakib@gmail.com"; 
+  const email = "sakibsarker6969@gmail.com";
+  const plainPassword = "sakibsarker6969@gmail.com"; 
 
   const exists = await User.findOne({ email });
   if (exists) {

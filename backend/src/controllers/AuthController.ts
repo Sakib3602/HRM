@@ -35,6 +35,10 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const { email, password } = req.body;
 
+     console.log('Login attempt - email:', JSON.stringify(email));
+    console.log('Login attempt - password:', JSON.stringify(password));
+
+    
     if (!email || !password || typeof email !== "string" || typeof password !== "string") {
       throw new AppError("Email and password are required", 400);
     }
