@@ -68,7 +68,7 @@ const AuthPage: React.FC = () => {
 
       <Navbar />
 
-      <div className="min-h-screen flex bg-[#16161e] font-sans text-white">
+      <div className="poppins-regular min-h-screen flex bg-[#16161e] font-sans text-white">
         {/* Left Side - Image Panel */}
         <div
           className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 bg-cover bg-center"
