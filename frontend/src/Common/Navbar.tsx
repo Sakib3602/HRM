@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="w-full font-sans" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <header className="poppins-regular w-full font-sans" >
       {/* Top Bar */}
       <div className="bg-[#101826] text-[#B8C0CC] py-2.5 hidden md:block text-sm border-b border-[#2A3850]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
               <div className="w-10 h-10 bg-[#101826] rounded flex items-center justify-center text-[#E7A33E] font-bold text-xl" style={{ fontFamily: 'Fraunces, serif' }}>
                 G
               </div>
-              <span className="text-xl font-semibold text-[#101826] tracking-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+              <span className="text-xl font-semibold text-[#101826] tracking-tight" >
                 Genesys <span className="text-[#E7A33E] italic">HRM</span>
               </span>
             </Link>

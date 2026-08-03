@@ -5,7 +5,7 @@ import { createUser, deleteUser, getMyProfile, getUsers, updateUser } from "../c
 
 const router = Router();
 
-router.use(protect); // এই ফাইলের সব route এ লগইন লাগবে
+router.use(protect); 
 
 router.get("/me", getMyProfile);
 router.get("/", hrOnly, getUsers);

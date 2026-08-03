@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   FiMenu, 
   FiBell,
@@ -14,27 +14,29 @@ import {
   FiActivity, 
   FiList, 
   FiMessageCircle,
-  FiLogOut
+  FiLogOut,
+  FiUser
 } from 'react-icons/fi';
 import { AuthContext } from '../../Common/AUTH/AuthProvider';
 
 const HrHome = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('dashboard');
-  const {logOut} = useContext(AuthContext)!;
+  const { logOut, user } = useContext(AuthContext)!;
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
-    { id: 'dashboard', icon: <FiGrid size={20} />, label: 'Dashboard' },
-    { id: 'quick_task', icon: <FiCheckSquare size={20} />, label: 'Quick Task' },
-    { id: 'manage_employees', icon: <FiUsers size={20} />, label: 'Manage Employees' },
-    { id: 'employee_record', icon: <FiFolder size={20} />, label: 'Employee Record' },
-    { id: 'interview_portal', icon: <FiMonitor size={20} />, label: 'Interview Portal' },
-    { id: 'onboarding', icon: <FiUserPlus size={20} />, label: 'Onboarding' },
-    { id: 'hr_documents', icon: <FiFileText size={20} />, label: 'HR Documents' },
-    { id: 'meeting', icon: <FiCalendar size={20} />, label: 'Meeting & Announcements' },
-    { id: 'office_activity', icon: <FiActivity size={20} />, label: 'Office Activity' },
-    { id: 'activity_feed', icon: <FiList size={20} />, label: 'Activity Feed' },
-    { id: 'team_chat', icon: <FiMessageCircle size={20} />, label: 'Team Chat' },
+    { id: 'dashboard', icon: <FiGrid size={20} />, label: 'Dashboard', url: '/dashboard/hr' },
+    { id: 'quick_task', icon: <FiCheckSquare size={20} />, label: 'Quick Task', url: '/dashboard/hr/quick-task' },
+    { id: 'manage_employees', icon: <FiUsers size={20} />, label: 'Manage Employees', url: '/dashboard/hr/manage-employees' },
+    { id: 'employee_record', icon: <FiFolder size={20} />, label: 'Employee Record', url: '/dashboard/hr/employee-record' },
+    { id: 'interview_portal', icon: <FiMonitor size={20} />, label: 'Interview Portal', url: '/dashboard/hr/interview-portal' },
+    { id: 'onboarding', icon: <FiUserPlus size={20} />, label: 'Onboarding', url: '/dashboard/hr/onboarding' },
+    { id: 'hr_documents', icon: <FiFileText size={20} />, label: 'HR Documents', url: '/dashboard/hr/hr-documents' },
+    { id: 'meeting', icon: <FiCalendar size={20} />, label: 'Meeting & Announcements', url: '/dashboard/hr/meeting' },
+    { id: 'office_activity', icon: <FiActivity size={20} />, label: 'Office Activity', url: '/dashboard/hr/office-activity' },
+    { id: 'activity_feed', icon: <FiList size={20} />, label: 'Activity Feed', url: '/dashboard/hr/activity-feed' },
+    { id: 'team_chat', icon: <FiMessageCircle size={20} />, label: 'Team Chat', url: '/dashboard/hr/team-chat' },
   ];
 
   return (
@@ -56,11 +58,12 @@ const HrHome = () => {
         {/* Menu Items */}
         <div className="flex-1 overflow-y-auto py-6 flex flex-col items-center gap-2 custom-scrollbar">
           {menuItems.map((item) => {
-            const isActive = activeMenu === item.id;
+            // URL অনুযায়ী অ্যাকটিভ স্টেট চেক করা হচ্ছে
+            const isActive = location.pathname === item.url;
             return (
               <div 
                 key={item.id}
-                onClick={() => setActiveMenu(item.id)}
+                onClick={() => navigate(item.url)}
                 className={`flex items-center cursor-pointer transition-all duration-200 ${
                   isSidebarOpen ? 'w-[90%] px-4 py-3 rounded-lg' : 'w-12 h-12 justify-center rounded-xl'
                 } ${
@@ -86,7 +89,7 @@ const HrHome = () => {
         </div>
 
         {/* Logout Button */}
-        <div onClick={()=> logOut()} className="p-4 border-t border-gray-200 shrink-0 flex flex-col items-center">
+        <div onClick={() => logOut()} className="p-4 border-t border-gray-200 shrink-0 flex flex-col items-center">
           <button 
             className={`flex items-center w-full cursor-pointer transition-all duration-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600 ${
               isSidebarOpen ? 'px-4 py-3 rounded-lg' : 'w-12 h-12 justify-center rounded-xl'
@@ -131,11 +134,15 @@ const HrHome = () => {
             {/* User Profile */}
             <div className="flex items-center gap-3 border-l border-gray-200 pl-6">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-bold text-gray-800 leading-tight">Sakib Sarkar Emon</p>
-                <p className="text-xs text-gray-500 mt-0.5">sakib@genesys.com</p>
+                <p className="text-sm font-bold text-gray-800 leading-tight">
+                  {user?.name || "HR Admin"}
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {user?.email || "admin@genesys.com"}
+                </p>
               </div>
               <div className="w-10 h-10 rounded-full bg-slate-700 text-white flex items-center justify-center font-bold shadow-sm cursor-pointer hover:bg-slate-800 transition-colors">
-                S
+                {user?.name ? user.name.charAt(0).toUpperCase() : <FiUser size={18} />}
               </div>
             </div>
           </div>

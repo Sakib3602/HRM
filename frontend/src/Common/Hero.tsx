@@ -3,7 +3,7 @@ import { FiArrowRight, FiCheckCircle, FiShield, FiTrendingUp } from 'react-icons
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative bg-[#16161e] text-white pt-12 pb-16 overflow-hidden font-sans">
+    <section className="poppins-regular relative bg-[#16161e] text-white pt-12 pb-16 overflow-hidden font-sans">
       
       {/* Background Glow Effect */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-62.5 bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"></div>

@@ -4,16 +4,49 @@ import bcrypt from "bcryptjs";
 import { AppError } from "../middleware/errorHandler";
 import { User } from "../models/User/User";
 
-// রেন্ডম টেম্প পাসওয়ার্ড জেনারেটর
-const generateTempPassword = (): string => {
-  return Math.random().toString(36).slice(-8);
-};
-
-// GET /api/users  (HR → সব ইউজার, employee হলে এই route এ আসবেই না, hrOnly middleware আটকাবে)
+// GET /api/users?page=1&limit=10&search=david&status=active
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await User.find({ isActive: true }).sort({ createdAt: -1 });
-    res.json(users);
+    const userCreatedBy = req.user?.id;
+
+    const page = Math.max(parseInt(String(req.query.page || "1")), 1);
+    const limit = Math.max(parseInt(String(req.query.limit || "10")), 1);
+    const search = String(req.query.search || "").trim();
+    const status = String(req.query.status || "active"); // active | inactive | all
+
+    const filter: Record<string, any> = { userCreatedBy };
+
+    if (status === "active") filter.isActive = true;
+    else if (status === "inactive") filter.isActive = false;
+    // status === "all" হলে isActive দিয়ে filter করা হবে না
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      filter.$or = [
+        { name: regex },
+        { email: regex },
+        { department: regex },
+        { phone: regex },
+        { manager: regex },
+      ];
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [users, total] = await Promise.all([
+      User.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+      User.countDocuments(filter),
+    ]);
+
+    res.json({
+      users,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.max(Math.ceil(total / limit), 1),
+      },
+    });
   } catch (err) {
     next(err);
   }
@@ -30,16 +63,22 @@ export const getMyProfile = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-// POST /api/users  (HR only — নতুন office user add)
+// POST /api/users  (HR only) — password এখন HR নিজে সেট করবে
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, department, manager, role, vehicle, phone } = req.body;
+    const userCreatedBy = req.user?.id; 
+    const { name, email, department, manager, role, vehicle, phone, password } = req.body;
 
     if (
-      !name || !email || !department ||
-      typeof name !== "string" || typeof email !== "string" || typeof department !== "string"
+      !name || !email || !department || !password ||
+      typeof name !== "string" || typeof email !== "string" ||
+      typeof department !== "string" || typeof password !== "string"
     ) {
-      throw new AppError("Name, email and department are required", 400);
+      throw new AppError("Name, email, department and password are required", 400);
+    }
+
+    if (password.length < 6) {
+      throw new AppError("Password must be at least 6 characters", 400);
     }
 
     const exists = await User.findOne({ email: email.toLowerCase().trim() });
@@ -47,10 +86,11 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       throw new AppError("A user with this email already exists", 409);
     }
 
-    const tempPassword = generateTempPassword();
-    const passwordHash = await bcrypt.hash(tempPassword, 12);
+    const passwordHash = await bcrypt.hash(password, 12);
 
     const user = await User.create({
+      userCreatedBy,
+      company: req.user?.company || "",
       name,
       email: email.toLowerCase(),
       passwordHash,
@@ -59,13 +99,10 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       vehicle,
       phone,
       role: role === "hr" ? "hr" : "employee",
-      mustChangePassword: true,
+      mustChangePassword: false, // HR নিজে password দিয়েছে, তাই force-change লাগবে না
     });
 
-    // TODO: nodemailer দিয়ে tempPassword ইউজারের ইমেইলে পাঠানো হবে
-    console.log(`Temp password for ${email}: ${tempPassword}`);
-
-    res.status(201).json({ user, tempPassword });
+    res.status(201).json({ user });
   } catch (err) {
     next(err);
   }

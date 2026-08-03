@@ -15,18 +15,16 @@ const REFRESH_COOKIE_OPTIONS = {
 
 // প্রতিটা successful login/refresh এ নতুন টোকেন পেয়ার বানিয়ে দেয়
 const issueTokens = async (user: any, res: Response) => {
-  const payload = { id: user._id.toString(), role: user.role };
+  const payload = { id: user._id.toString(), role: user.role, company: user.company || "" };
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 
   user.refreshTokenHash = hashToken(refreshToken);
   await user.save();
 
-  // ওয়েব ব্রাউজার এই cookie টা automatic ব্যবহার করবে (httpOnly, JS access নাই)
+ 
   res.cookie("refreshToken", refreshToken, REFRESH_COOKIE_OPTIONS);
 
-  // মোবাইল অ্যাপ cookie ব্যবহার করে না — তাই body তেও পাঠানো হচ্ছে,
-  // app টা এইটা SecureStore/Keychain এ রাখবে এবং Authorization header এ accessToken পাঠাবে
   return { accessToken, refreshToken };
 };
 

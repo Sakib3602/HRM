@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#F3EFE6] pt-16 pb-8 border-t border-[#DCD5C4]" style={{ fontFamily: 'Inter, sans-serif' }}>
+    <footer className="poppins-regular bg-[#F3EFE6] pt-16 pb-8 border-t border-[#DCD5C4]" >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-12">
 
@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
               <div className="w-9 h-9 bg-[#101826] rounded flex items-center justify-center text-[#E7A33E] font-bold text-lg" style={{ fontFamily: 'Fraunces, serif' }}>
                 G
               </div>
-              <span className="text-lg font-semibold text-[#101826] tracking-tight" style={{ fontFamily: 'Fraunces, serif' }}>
+              <span className="text-lg font-semibold text-[#101826] tracking-tight" >
                 Genesys <span className="text-[#E7A33E] italic">HRM</span>
               </span>
             </div>

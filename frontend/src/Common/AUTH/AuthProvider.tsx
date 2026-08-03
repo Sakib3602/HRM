@@ -23,6 +23,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isHR: boolean;
+  isEmployee: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
@@ -101,6 +102,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         user,
         isAuthenticated: !!user,
         isHR: user?.role === 'hr',
+        isEmployee: user?.role === 'employee',
         isLoading,
         login,
         logOut,

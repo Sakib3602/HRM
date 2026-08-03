@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/token";
 
-// লগইন করা যেকোনো ইউজারের জন্য — টোকেন চেক করবে
+
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   const header = req.headers.authorization;
 

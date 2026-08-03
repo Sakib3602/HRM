@@ -27,7 +27,7 @@ export interface IUser extends Document {
   pushToken?: string;
   refreshTokenHash?: string; 
   createdAt: Date;
-  company?: string;
+  company: string;
   userCreatedBy?: Types.ObjectId;
 }
 
@@ -57,7 +57,7 @@ const userSchema = new Schema<IUser>({
   },
   pushToken: { type: String, default: "" },
   refreshTokenHash: { type: String, default: null },
-  company: { type: String, default: "" },
+  company: { type: String, required: true },
   userCreatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
 },
 { timestamps: true, versionKey: false },

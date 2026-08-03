@@ -15,15 +15,15 @@ if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
 
-app.use(helmet()); // নিরাপদ HTTP headers (XSS, clickjacking ইত্যাদি থেকে বেসিক সুরক্ষা)
+app.use(helmet()); 
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*", // ওয়েব ফ্রন্টএন্ডের URL, wildcard credentials এ কাজ করে না
-    credentials: true, // cookie পাঠাতে/নিতে এইটা লাগবে
+    origin: process.env.CLIENT_URL || "*", 
+    credentials: true, 
   })
 );
-app.use(express.json({ limit: "1mb" })); // payload size limit — DoS ঠেকানোর ছোট্ট সুরক্ষা
+app.use(express.json({ limit: "1mb" })); 
 app.use(cookieParser());
 
 // health check

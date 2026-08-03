@@ -5,14 +5,14 @@ import Navbar from "./Common/Navbar";
 
 const App = () => {
     return (
-        <>
-
+        <div className="poppins-regular">
+ 
         <Navbar></Navbar>
         <Hero></Hero>
         <Footer></Footer>
         
         
-        </>
+        </div>
     );
 };
 
