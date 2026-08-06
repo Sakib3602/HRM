@@ -6,7 +6,7 @@ import { AppError } from "../middleware/errorHandler";
 import { User } from "../models/User/User";
 
 const REFRESH_COOKIE_OPTIONS = {
-  httpOnly: true,                                   // JS দিয়ে পড়া যাবে না (XSS প্রোটেকশন)
+  httpOnly: true,                                   
   secure: process.env.NODE_ENV === "production",     // প্রোডাকশনে শুধু HTTPS এ পাঠাবে
   sameSite: "lax" as const,                          // CSRF প্রোটেকশন
   maxAge: 7 * 24 * 60 * 60 * 1000,                   // ৭ দিন
@@ -20,6 +20,11 @@ const issueTokens = async (user: any, res: Response) => {
   const refreshToken = signRefreshToken(payload);
 
   user.refreshTokenHash = hashToken(refreshToken);
+
+
+
+
+  
   await user.save();
 
  

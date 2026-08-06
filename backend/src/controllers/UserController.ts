@@ -4,6 +4,15 @@ import bcrypt from "bcryptjs";
 import { AppError } from "../middleware/errorHandler";
 import { User } from "../models/User/User";
 
+const clampPercent = (value: unknown) => {
+  const percent = Number(value);
+  if (Number.isNaN(percent)) {
+    throw new AppError("Progress percent is required", 400);
+  }
+
+  return Math.max(0, Math.min(100, Math.round(percent)));
+};
+
 // GET /api/users?page=1&limit=10&search=david&status=active
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -47,6 +56,38 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
         totalPages: Math.max(Math.ceil(total / limit), 1),
       },
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/users/onboarding
+export const getOnboardingUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userCreatedBy = req.user?.id;
+    const search = String(req.query.search || "").trim();
+
+    const filter: Record<string, any> = {
+      userCreatedBy,
+      role: "employee",
+      isActive: true,
+      employmentStatus: { $ne: "permanent" },
+    };
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      filter.$or = [
+        { name: regex },
+        { email: regex },
+        { department: regex },
+        { phone: regex },
+        { manager: regex },
+      ];
+    }
+
+    const users = await User.find(filter).sort({ "onboarding.percent": -1, createdAt: -1 });
+
+    res.json({ users });
   } catch (err) {
     next(err);
   }
@@ -99,7 +140,12 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
       vehicle,
       phone,
       role: role === "hr" ? "hr" : "employee",
+      employmentStatus: role === "hr" ? "permanent" : "onboarding",
       mustChangePassword: false, // HR নিজে password দিয়েছে, তাই force-change লাগবে না
+      onboarding:
+        role === "hr"
+          ? { percent: 100, completedAt: new Date(), stages: [], notes: [] }
+          : { percent: 0, completedAt: null, stages: [], notes: [] },
     });
 
     res.status(201).json({ user });
@@ -126,6 +172,60 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   }
 };
 
+// PATCH /api/users/:id/onboarding  (HR only)
+export const updateOnboardingProgress = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+      userCreatedBy: req.user?.id,
+      role: "employee",
+    });
+
+    if (!user) throw new AppError("Employee not found", 404);
+    if (!user.isActive || user.employmentStatus === "removed") {
+      throw new AppError("Removed employees cannot be updated", 400);
+    }
+    if (user.employmentStatus === "permanent") {
+      throw new AppError("This employee is already permanent", 400);
+    }
+
+    const nextPercent = clampPercent(req.body.percent);
+    if (nextPercent <= user.onboarding.percent) {
+      throw new AppError("Progress must be higher than the current value", 400);
+    }
+
+    const note = String(req.body.note || "").trim();
+    const strengths = String(req.body.strengths || "").trim();
+    const weaknesses = String(req.body.weaknesses || "").trim();
+
+    if (!note) {
+      throw new AppError("A note is required for each progress update", 400);
+    }
+
+    user.onboarding.percent = nextPercent;
+    user.onboarding.notes.push({
+      percent: nextPercent,
+      note,
+      strengths,
+      weaknesses,
+      createdAt: new Date(),
+      updatedBy: req.user?.id as any,
+    });
+
+    if (nextPercent >= 100) {
+      user.onboarding.percent = 100;
+      user.onboarding.completedAt = new Date();
+      user.employmentStatus = "permanent";
+    }
+
+    await user.save();
+
+    res.json({ user });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // DELETE /api/users/:id  (HR only — soft delete)
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -135,7 +235,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { isActive: false },
+      { isActive: false, employmentStatus: "removed" },
       { new: true }
     );
 

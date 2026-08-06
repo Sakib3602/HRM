@@ -6,6 +6,7 @@ import HrDashboard from "./Components/HR/HrDashboard";
 import HrQuickTask from "./Components/HR/HrQuickTask";
 import HrPrivateRoute from "./Components/HR/HrPrivate/HrPrivateRoute";
 import HrManageEmployee from "./Components/HR/HrManageEmployee";
+import HrOnbording from "./Components/HR/HrOnbording";
 import EmHome from "./Components/Employee/EmHome";
 import EmPrivateRoute from "./Components/Employee/EmPrivate/EmPrivateRoute";
 import EmDashboard from "./Components/Employee/EmDashboard";
@@ -20,6 +21,7 @@ const RoutesAll = () => {
         <Route index element={<HrDashboard />} />
         <Route path="quick-task" element={<HrQuickTask />} />
         <Route path="manage-employees" element={<HrManageEmployee />} />
+        <Route path="onboarding" element={<HrOnbording />} />
       </Route>
 
 

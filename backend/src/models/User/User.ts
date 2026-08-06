@@ -1,11 +1,21 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export type UserRole = "employee" | "hr";
+export type EmploymentStatus = "onboarding" | "permanent" | "removed";
 
 export interface IOnboardingStage {
   name: string;
   done: boolean;
   doneAt?: Date;
+}
+
+export interface IOnboardingNote {
+  percent: number;
+  note: string;
+  strengths: string;
+  weaknesses: string;
+  createdAt: Date;
+  updatedBy?: Types.ObjectId;
 }
 
 export interface IUser extends Document {
@@ -19,10 +29,13 @@ export interface IUser extends Document {
   vehicle?: string;
   phone?: string;
   isActive: boolean;
+  employmentStatus: EmploymentStatus;
   mustChangePassword: boolean;
   onboarding: {
     percent: number;
+    completedAt?: Date;
     stages: IOnboardingStage[];
+    notes: IOnboardingNote[];
   };
   pushToken?: string;
   refreshTokenHash?: string; 
@@ -40,6 +53,18 @@ const onboardingStageSchema = new Schema<IOnboardingStage>(
   { _id: false }
 );
 
+const onboardingNoteSchema = new Schema<IOnboardingNote>(
+  {
+    percent: { type: Number, required: true, min: 0, max: 100 },
+    note: { type: String, default: "" },
+    strengths: { type: String, default: "" },
+    weaknesses: { type: String, default: "" },
+    createdAt: { type: Date, default: Date.now },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User", default: null },
+  },
+  { _id: false }
+);
+
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true, },
@@ -50,10 +75,13 @@ const userSchema = new Schema<IUser>({
   vehicle: { type: String, default: "" },
   phone: { type: String, default: "" },
   isActive: { type: Boolean, default: true },
+  employmentStatus: { type: String, enum: ["onboarding", "permanent", "removed"], default: "permanent" },
   mustChangePassword: { type: Boolean, default: true },
   onboarding: {
     percent: { type: Number, default: 0 },
+    completedAt: { type: Date, default: null },
     stages: { type: [onboardingStageSchema], default: [] },
+    notes: { type: [onboardingNoteSchema], default: [] },
   },
   pushToken: { type: String, default: "" },
   refreshTokenHash: { type: String, default: null },
