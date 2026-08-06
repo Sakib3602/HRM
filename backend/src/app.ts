@@ -6,6 +6,7 @@ import AuthRoutes from "./routes/AuthRoutes";
 import UserRoutes from "./routes/UserRoutes";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import TaskRoutes from "./routes/TaskRoutes";
+import DocumentRoutes from "./routes/DocumentRoutes";
 
 
 
@@ -39,6 +40,7 @@ app.get("/", (_req, res) => {
 app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoutes);
 app.use("/api/tasks", TaskRoutes);
+app.use("/api/documents", DocumentRoutes);
 
 
 app.use(notFound);

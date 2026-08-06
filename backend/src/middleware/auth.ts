@@ -20,7 +20,6 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// শুধু HR এর জন্য route গার্ড করা
 export const hrOnly = (req: Request, res: Response, next: NextFunction) => {
   if (req.user?.role !== "hr") {
     return res.status(403).json({ message: "Access denied — HR only" });
