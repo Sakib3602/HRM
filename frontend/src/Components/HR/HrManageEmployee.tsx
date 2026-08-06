@@ -4,10 +4,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   FiUserPlus,
   FiTrash2,
-  FiUsers,
-  FiBriefcase,
-  FiShield,
-  FiGrid,
   FiEye,
   FiEyeOff,
   FiSearch,
@@ -144,15 +140,24 @@ const HrManageEmployee: React.FC = () => {
     createMutation.mutate(formData);
   };
 
-  // Stats — বর্তমান পেজের না, সবসময় "active" filter দিয়ে পুরো count দেখানো ভালো,
-  // কিন্তু simplicity রাখতে এখন যা fetch হয়েছে তার উপর ভিত্তি করেই দেখাচ্ছি
   const totalUsers = pagination.total;
   const employeeCount = users.filter((u) => u.role === "employee").length;
   const hrCount = users.filter((u) => u.role === "hr").length;
   const departmentCount = new Set(users.map((u) => u.department)).size;
 
+  // বার চার্টের জন্য ডেটা এবং কালার কনফিগারেশন (আগের ছবির বেগুনি টোন অনুযায়ী)
+  const chartData = [
+    { label: "Total Users", value: totalUsers, color: "bg-[#59526F]" },
+    { label: "Employees", value: employeeCount, color: "bg-[#756591]" },
+    { label: "HR Admins", value: hrCount, color: "bg-[#9B8BC1]" },
+    { label: "Departments", value: departmentCount, color: "bg-[#C3B8DA]" },
+  ];
+  
+  // বারের উচ্চতা নির্ণয়ের জন্য সর্বোচ্চ ভ্যালু বের করা
+  const maxVal = Math.max(...chartData.map(d => d.value), 1);
+
   return (
-    <div className="space-y-6" style={{ fontFamily: "Inter, sans-serif" }}>
+    <div className="pt-5 space-y-6" style={{ fontFamily: "Inter, sans-serif" }}>
       {alert && (
         <Alert
           type={alert.type}
@@ -163,7 +168,13 @@ const HrManageEmployee: React.FC = () => {
         />
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Page Heading */}
+      <div className="poppins-regular">
+        <h1 className="text-2xl font-bold text-[#59526F]">Manage Employees</h1>
+        <p className="text-sm text-gray-500 mt-1">Add new members and manage your office users</p>
+      </div>
+
+      <div className="poppins-regular grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-base font-bold text-gray-800 mb-5">
             Add a new office user
@@ -181,7 +192,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g. David Miller"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("name", { required: "Name is required" })}
               />
               {errors.name && (
@@ -196,7 +207,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="email"
                 placeholder="david@company.com"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -218,7 +229,7 @@ const HrManageEmployee: React.FC = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Set a login password"
-                  className="w-full px-3.5 py-2.5 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                  className="w-full px-3.5 py-2.5 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -247,7 +258,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="tel"
                 placeholder="e.g. 01712345678"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("phone")}
               />
             </div>
@@ -259,7 +270,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g. Engineering"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("department", { required: "Department is required" })}
               />
               {errors.department && (
@@ -274,7 +285,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g. Peter Wilson"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("manager")}
               />
             </div>
@@ -286,7 +297,7 @@ const HrManageEmployee: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g. Ford Transit AB12 CDE"
-                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+                className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
                 {...register("vehicle")}
               />
             </div>
@@ -295,7 +306,7 @@ const HrManageEmployee: React.FC = () => {
               <button
                 type="submit"
                 disabled={createMutation.isPending}
-                className="flex items-center gap-2 bg-slate-700 hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-colors"
+                className="flex items-center gap-2 bg-[#59526F] hover:bg-[#4A4F63] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-colors"
               >
                 <FiUserPlus size={16} />
                 {createMutation.isPending ? "Adding..." : "Add user"}
@@ -304,20 +315,39 @@ const HrManageEmployee: React.FC = () => {
           </form>
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-          <h2 className="text-base font-bold text-gray-800 mb-5">
+        {/* Company Snapshot: Bar Chart Section */}
+        <div className="poppins-regular bg-white rounded-2xl border border-gray-200 p-6 shadow-sm flex flex-col justify-between">
+          <h2 className="text-base font-bold text-gray-800 mb-2">
             Company snapshot
           </h2>
-          <div className="grid grid-cols-2 gap-3">
-            <StatCard icon={<FiUsers size={18} />} value={totalUsers} label="Total users" color="text-slate-700" />
-            <StatCard icon={<FiBriefcase size={18} />} value={employeeCount} label="Employees (page)" color="text-blue-600" />
-            <StatCard icon={<FiShield size={18} />} value={hrCount} label="HR admins (page)" color="text-emerald-600" />
-            <StatCard icon={<FiGrid size={18} />} value={departmentCount} label="Departments (page)" color="text-amber-600" />
+          <p className="text-xs text-gray-400 mb-6">Visual overview of current page</p>
+          
+          <div className="flex items-end justify-between gap-3 h-48 border-b-2 border-gray-100 pb-1 mt-auto">
+            {chartData.map((item, index) => {
+              // বারের উচ্চতা ক্যালকুলেট করা হচ্ছে, মিনিমাম ১২% রাখা হয়েছে যাতে 0 হলেও ভ্যালু দেখা যায়
+              const heightPercent = Math.max((item.value / maxVal) * 100, 15);
+              return (
+                <div key={index} className="flex flex-col items-center w-full h-full justify-end group">
+                  <div 
+                    className={`w-10 sm:w-14 ${item.color} rounded-t-md flex items-center justify-center relative transition-all duration-500 hover:opacity-90`}
+                    style={{ height: `${heightPercent}%` }}
+                  >
+                    {/* নাম্বারটি বারের একদম মাঝখানে */}
+                    <span className="text-white font-bold text-sm absolute top-1/2 -translate-y-1/2">
+                      {item.value}
+                    </span>
+                  </div>
+                  <span className="text-[10px] sm:text-xs font-bold text-[#59526F] mt-2 text-center h-8 flex items-center justify-center w-full leading-tight">
+                    {item.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="poppins-regular bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
           <h2 className="text-base font-bold text-gray-800">All office users</h2>
 
@@ -329,7 +359,7 @@ const HrManageEmployee: React.FC = () => {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search name, email, department..."
-                className="pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors w-full sm:w-64"
+                className="pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors w-full sm:w-64"
               />
             </div>
 
@@ -339,7 +369,7 @@ const HrManageEmployee: React.FC = () => {
                 setStatus(e.target.value as "active" | "inactive" | "all");
                 setPage(1);
               }}
-              className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-slate-500 focus:bg-white transition-colors"
+              className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
             >
               <option value="active">Active</option>
               <option value="inactive">Removed</option>
@@ -440,20 +470,5 @@ const HrManageEmployee: React.FC = () => {
     </div>
   );
 };
-
-const StatCard: React.FC<{
-  icon: React.ReactNode;
-  value: number;
-  label: string;
-  color: string;
-}> = ({ icon, value, label, color }) => (
-  <div className="bg-gray-50 border border-gray-100 rounded-xl p-4">
-    <div className={`flex items-center gap-2 ${color}`}>
-      {icon}
-      <span className="text-2xl font-bold">{value}</span>
-    </div>
-    <p className="text-xs text-gray-500 mt-1.5">{label}</p>
-  </div>
-);
 
 export default HrManageEmployee;
