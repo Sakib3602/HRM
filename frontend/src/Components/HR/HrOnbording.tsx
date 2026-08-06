@@ -5,8 +5,7 @@ import {
   FiCheckCircle,
   FiSearch,
   FiUser,
-  FiMessageSquare,
-  FiTrendingUp,
+
   FiEdit3,
   FiPlus,
   FiMinus,

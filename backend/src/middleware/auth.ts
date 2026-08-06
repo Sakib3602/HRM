@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/token";
+import { User } from "../models/User/User";
 
 
-export const protect = (req: Request, res: Response, next: NextFunction) => {
+export const protect = async (req: Request, res: Response, next: NextFunction) => {
   const header = req.headers.authorization;
 
   if (!header || !header.startsWith("Bearer ")) {
@@ -13,6 +14,17 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = verifyAccessToken(token);
+
+    const user = await User.findById(decoded.id).select("_id role company isActive refreshTokenHash");
+    if (!user || !user.isActive) {
+      if (user) {
+        user.refreshTokenHash = undefined;
+        await user.save();
+      }
+      res.clearCookie("refreshToken", { path: "/api/auth" });
+      return res.status(401).json({ message: "Account is inactive. Please contact HR." });
+    }
+
     req.user = decoded;
     next();
   } catch (err) {

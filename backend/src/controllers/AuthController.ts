@@ -79,6 +79,11 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
     const user = await User.findById(decoded.id);
 
     if (!user || !user.isActive) {
+      if (user) {
+        user.refreshTokenHash = undefined;
+        await user.save();
+      }
+      res.clearCookie("refreshToken", { path: "/api/auth" });
       throw new AppError("User not found or inactive", 401);
     }
 
