@@ -81,6 +81,7 @@ const HrOnbording = () => {
     },
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const users = data?.users ?? [];
 
   const updateMutation = useMutation({
@@ -310,7 +311,7 @@ const HrOnbording = () => {
                       </div>
                     </div>
 
-                    <div className="min-w-[180px] rounded-xl bg-gray-50 p-4 border border-gray-100">
+                    <div className="min-w-45 rounded-xl bg-gray-50 p-4 border border-gray-100">
                       <div className="mb-2 flex items-center justify-between text-xs font-bold uppercase tracking-wide text-gray-500">
                         <span>Progress</span>
                         <span className="text-[#59526F]">{percent}%</span>

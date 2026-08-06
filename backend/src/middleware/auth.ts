@@ -27,3 +27,9 @@ export const hrOnly = (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
+export const employeeOnly = (req: Request, res: Response, next: NextFunction) => {
+  if (req.user?.role !== "employee") {
+    return res.status(403).json({ message: "Access denied — Employee only" });
+  }
+  next();
+};

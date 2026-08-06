@@ -245,3 +245,17 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     next(err);
   }
 };
+
+
+export const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
+  try{
+    const userCreatedBy = req.user?.id;
+    const company = req.user?.company;
+
+    const users = await User.find({ userCreatedBy, company , isActive: true }).select("name email department role");
+    res.json({ users });
+  } catch (err) {
+    next(err);
+  }
+
+}
