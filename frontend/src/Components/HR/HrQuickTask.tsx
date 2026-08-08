@@ -197,7 +197,7 @@ const HrQuickTask: React.FC = () => {
   const overdueCount = tasks.filter(isTaskOverdue).length;
 
   return (
-    <div className="poppins-regular space-y-6">
+    <div className="pt-5 poppins-regular space-y-6">
       {alert && (
         <Alert type={alert.type} title={alert.title} message={alert.message} duration={alert.duration} onClose={hideAlert} />
       )}

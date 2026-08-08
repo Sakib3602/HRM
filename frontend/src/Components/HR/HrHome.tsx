@@ -51,14 +51,14 @@ const HrHome = () => {
     { id: 'employee_record', icon: <FiFolder size={20} />, label: 'Employee Record', url: '/dashboard/hr/employee-record' },
     { id: 'interview_portal', icon: <FiMonitor size={20} />, label: 'Interview Portal', url: '/dashboard/hr/interview-portal' },
     { id: 'hr_documents', icon: <FiFileText size={20} />, label: 'HR Documents', url: '/dashboard/hr/hr-documents' },
-    { id: 'meeting', icon: <FiCalendar size={20} />, label: 'Meeting & Announcements', url: '/dashboard/hr/meeting' },
+    { id: 'meeting', icon: <FiCalendar size={20} />, label: 'Meeting & Announcements', url: '/dashboard/hr/hr-meetings' },
     { id: 'office_activity', icon: <FiActivity size={20} />, label: 'Office Activity', url: '/dashboard/hr/office-activity' },
     { id: 'activity_feed', icon: <FiList size={20} />, label: 'Activity Feed', url: '/dashboard/hr/activity-feed' },
     { id: 'team_chat', icon: <FiMessageCircle size={20} />, label: 'Team Chat', url: '/dashboard/hr/team-chat' },
   ];
 
   return (
-    <div className="poppins-regular flex h-screen bg-[#F1F1F1] font-sans overflow-hidden">
+    <div className="poppins-regular flex h-screen bg-[#C4DDA0] font-sans overflow-hidden">
       
       {/* Sidebar */}
       <aside 
@@ -144,11 +144,11 @@ const HrHome = () => {
             </button>
 
             <div className="hidden md:flex flex-col ml-2">
-              <span className="text-[16px] font-bold text-[#4A4F63]">
+              <span className="text-[16px] font-bold text-white">
                 HR Dashboard
               </span>
               <span className="text-[13px] font-medium text-[#8A90A5]">
-                {formattedDate} <span className="mx-1">|</span> <span className="text-[#4A4F63]">{formattedTime}</span>
+                {formattedDate} <span className="mx-1">|</span> <span className="text-white">{formattedTime}</span>
               </span>
             </div>
           </div>
@@ -179,7 +179,7 @@ const HrHome = () => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto px-8 pb-8 bg-[#F1F1F1]">
+        <main className="flex-1 overflow-auto px-8 pb-8 bg-[#D2E6B8]">
           {/* Outlet for dynamic routes */}
           <Outlet />
         </main>

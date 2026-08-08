@@ -7,6 +7,8 @@ import UserRoutes from "./routes/UserRoutes";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import TaskRoutes from "./routes/TaskRoutes";
 import DocumentRoutes from "./routes/DocumentRoutes";
+import MeetingRoutes from "./routes/MeetingRoutes";
+import AnnouncementRoutes from "./routes/AnnouncementRoutes";
 
 
 
@@ -41,6 +43,8 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoutes);
 app.use("/api/tasks", TaskRoutes);
 app.use("/api/documents", DocumentRoutes);
+app.use("/api/announcements", AnnouncementRoutes);
+app.use("/api/meetings", MeetingRoutes);
 
 
 app.use(notFound);
