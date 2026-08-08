@@ -114,11 +114,12 @@ const HrOnbording = () => {
       setEditingUserId(null); // আপডেট শেষে পপ-আপ বন্ধ
       await queryClient.invalidateQueries({ queryKey: ["hr-onboarding-users"] });
     },
-    onError: (err: any) => {
+    onError: (err: unknown) => {
+      const apiMessage = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
       showAlert({
         type: "error",
         title: "Update failed",
-        message: err?.response?.data?.message || "Could not update onboarding progress.",
+        message: apiMessage || "Could not update onboarding progress.",
         duration: 4,
       });
     },
@@ -219,23 +220,23 @@ const HrOnbording = () => {
       )}
 
       {/* Header & Stats */}
-      <div className="poppins-regular flex flex-col gap-4 rounded-2xl p-6 shadow-sm lg:flex-row lg:items-end lg:justify-between">
+      <div className="poppins-regular flex flex-col gap-4 rounded-2xl p-6 shadow-sm bg-white border border-[#E4E9E4] lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#9CAD9B]">
             HR ONBOARDING
           </p>
-          <h2 className="mt-1 text-2xl font-bold text-[#59526F]">
+          <h2 className="mt-1 text-2xl font-bold text-[#2C3E2F]">
             Employee progress overview
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-[#6B7D6B]">
             Manage new employees until they reach 100% and become permanent.
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-4 text-center">
-          <StatBubble label="Active" value={stats.activeCount} badgeColor="bg-[#A4CD3C]" />
-          <StatBubble label="Completed" value={stats.completedCount} badgeColor="bg-[#59526F]" />
-          <StatBubble label="Avg Progress" value={`${stats.averageProgress}%`} badgeColor="bg-[#A4CD3C]" />
+          <StatBubble label="Active" value={stats.activeCount} badgeColor="bg-[#8FB978]" />
+          <StatBubble label="Completed" value={stats.completedCount} badgeColor="bg-[#6B7D6B]" />
+          <StatBubble label="Avg Progress" value={`${stats.averageProgress}%`} badgeColor="bg-[#8FB978]" />
         </div>
       </div>
 
@@ -243,22 +244,22 @@ const HrOnbording = () => {
       <div className="poppins-regular  p-6 ">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
           <div>
-            <h3 className="text-base font-bold text-gray-800">Current onboarding list</h3>
+            <h3 className="text-base font-bold text-[#2C3E2F]">Current onboarding list</h3>
           </div>
 
           <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center">
             <div className="relative md:w-80">
-              <FiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <FiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#9CAD9B]" />
               <input
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search employee, email..."
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-3 text-sm text-gray-800 outline-none transition focus:border-gray-400 focus:bg-white"
+                className="w-full rounded-xl border border-[#E4E9E4] bg-[#F8FBF5] py-2.5 pl-10 pr-3 text-sm text-[#2C3E2F] outline-none transition focus:border-[#8FB978] focus:bg-white"
               />
             </div>
             <button
               onClick={() => refetch()}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-bold text-[#59526F] transition hover:bg-gray-50"
+              className="rounded-xl border border-[#E4E9E4] bg-white px-5 py-2.5 text-sm font-bold text-[#2C3E2F] transition hover:bg-[#F3F8EE]"
             >
               {isFetching ? "Refreshing..." : "Refresh"}
             </button>
@@ -266,13 +267,13 @@ const HrOnbording = () => {
         </div>
 
         {isLoading ? (
-          <div className="py-14 text-center text-sm text-gray-500">Loading onboarding data...</div>
+          <div className="py-14 text-center text-sm text-[#6B7D6B]">Loading onboarding data...</div>
         ) : error ? (
           <div className="py-14 text-center text-sm text-red-500">
             Failed to load onboarding data. Please try again.
           </div>
         ) : users.length === 0 ? (
-          <div className="py-14 text-center text-sm text-gray-500">
+          <div className="py-14 text-center text-sm text-[#6B7D6B]">
             No onboarding employees found.
           </div>
         ) : (
@@ -286,38 +287,38 @@ const HrOnbording = () => {
               return (
                 <article
                   key={user._id}
-                  className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md flex flex-col"
+                  className="rounded-2xl border border-[#E4E9E4] bg-white p-5 shadow-sm transition hover:shadow-md flex flex-col"
                 >
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div className="space-y-3 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-lg font-extrabold text-[#59526F]">{user.name}</h4>
+                        <h4 className="text-lg font-extrabold text-[#2C3E2F]">{user.name}</h4>
                         {isCompleted ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F2D9] px-2.5 py-0.5 text-xs font-bold text-[#2C3E2F] border border-[#DDEAC5]">
                             <FiCheckCircle size={12} />
                             Permanent
                           </span>
                         ) : (
-                          <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-bold text-amber-600 border border-amber-100">
+                          <span className="inline-flex items-center rounded-full bg-[#F3F8EE] px-2.5 py-0.5 text-xs font-bold text-[#6B7D6B] border border-[#DDEAC5]">
                             Onboarding
                           </span>
                         )}
                       </div>
 
-                      <div className="grid grid-cols-1 gap-2 text-sm text-gray-600 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-2 text-sm text-[#6B7D6B] sm:grid-cols-2">
                         <InfoRow icon={<FiUser />} text={user.email} />
                         <InfoRow icon={<FiCalendar />} text={user.department || "No department"} />
                       </div>
                     </div>
 
-                    <div className="min-w-45 rounded-xl bg-gray-50 p-4 border border-gray-100">
-                      <div className="mb-2 flex items-center justify-between text-xs font-bold uppercase tracking-wide text-gray-500">
+                    <div className="min-w-45 rounded-xl bg-[#F8FBF5] p-4 border border-[#E4E9E4]">
+                      <div className="mb-2 flex items-center justify-between text-xs font-bold uppercase tracking-wide text-[#6B7D6B]">
                         <span>Progress</span>
-                        <span className="text-[#59526F]">{percent}%</span>
+                        <span className="text-[#2C3E2F]">{percent}%</span>
                       </div>
-                      <div className="h-2 rounded-full bg-gray-200">
+                      <div className="h-2 rounded-full bg-[#E4E9E4]">
                         <div
-                          className="h-2 rounded-full bg-[#A4CD3C] transition-all duration-500"
+                          className="h-2 rounded-full bg-[#8FB978] transition-all duration-500"
                           style={{ width: `${percent}%` }}
                         />
                       </div>
@@ -325,7 +326,7 @@ const HrOnbording = () => {
                         <button
                           type="button"
                           onClick={() => openModal(user)}
-                          className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-[#59526F] py-2 text-xs font-bold text-white transition hover:bg-[#4A4F63]"
+                          className="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-[#8FB978] py-2 text-xs font-bold text-white transition hover:bg-[#7FA867]"
                         >
                           <FiEdit3 size={14} /> Update
                         </button>
@@ -349,10 +350,10 @@ const HrOnbording = () => {
       {/* Popup Modal (Update Progress) */}
       {editingUserId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-[#59526F]">Update Progress</h3>
-              <button onClick={() => setEditingUserId(null)} className="text-gray-400 hover:text-gray-600">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up border border-[#E4E9E4]">
+            <div className="bg-[#F8FBF5] px-6 py-4 border-b border-[#EEF2ED] flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[#2C3E2F]">Update Progress</h3>
+              <button onClick={() => setEditingUserId(null)} className="text-[#9CAD9B] hover:text-[#6B7D6B]">
                 <FiX size={20} />
               </button>
             </div>
@@ -360,25 +361,25 @@ const HrOnbording = () => {
             <div className="p-6 space-y-5">
               {/* Custom + / - Progress Control */}
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-2 text-center">
+                <label className="block text-xs font-bold uppercase text-[#6B7D6B] mb-2 text-center">
                   Set Progress Percentage
                 </label>
-                <div className="flex items-center justify-center gap-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                <div className="flex items-center justify-center gap-6 bg-[#F8FBF5] p-4 rounded-xl border border-[#E4E9E4]">
                   <button 
                     onClick={() => adjustPercent(editingUserId, -5)}
-                    className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-100 hover:text-[#59526F] shadow-sm transition-colors"
+                    className="w-10 h-10 rounded-full bg-white border border-[#E4E9E4] flex items-center justify-center text-[#6B7D6B] hover:bg-[#F3F8EE] hover:text-[#2C3E2F] shadow-sm transition-colors"
                   >
                     <FiMinus size={18} />
                   </button>
                   <div className="w-20 text-center">
-                    <span className="text-3xl font-extrabold text-[#59526F]">
+                    <span className="text-3xl font-extrabold text-[#2C3E2F]">
                       {getDraft(editingUserId).percent}
-                      <span className="text-lg text-gray-400">%</span>
+                      <span className="text-lg text-[#9CAD9B]">%</span>
                     </span>
                   </div>
                   <button 
                     onClick={() => adjustPercent(editingUserId, 5)}
-                    className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-100 hover:text-[#59526F] shadow-sm transition-colors"
+                    className="w-10 h-10 rounded-full bg-white border border-[#E4E9E4] flex items-center justify-center text-[#6B7D6B] hover:bg-[#F3F8EE] hover:text-[#2C3E2F] shadow-sm transition-colors"
                   >
                     <FiPlus size={18} />
                   </button>
@@ -386,45 +387,45 @@ const HrOnbording = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1.5">Note</label>
+                <label className="block text-xs font-bold uppercase text-[#6B7D6B] mb-1.5">Note</label>
                 <input
                   type="text"
                   value={getDraft(editingUserId).note}
                   onChange={(e) => setDraftField(editingUserId, "note", e.target.value)}
                   placeholder="E.g. Completed week 2 training"
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-gray-400 focus:bg-white"
+                  className="w-full rounded-xl border border-[#E4E9E4] bg-[#F8FBF5] px-4 py-2.5 text-sm text-[#2C3E2F] outline-none focus:border-[#8FB978] focus:bg-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1.5">Strengths</label>
+                  <label className="block text-xs font-bold uppercase text-[#6B7D6B] mb-1.5">Strengths</label>
                   <textarea
                     rows={2}
                     value={getDraft(editingUserId).strengths}
                     onChange={(e) => setDraftField(editingUserId, "strengths", e.target.value)}
                     placeholder="E.g. Fast learner"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-800 outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full rounded-xl border border-[#E4E9E4] bg-[#F8FBF5] px-4 py-2 text-sm text-[#2C3E2F] outline-none focus:border-[#8FB978] focus:bg-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-1.5">Weaknesses</label>
+                  <label className="block text-xs font-bold uppercase text-[#6B7D6B] mb-1.5">Weaknesses</label>
                   <textarea
                     rows={2}
                     value={getDraft(editingUserId).weaknesses}
                     onChange={(e) => setDraftField(editingUserId, "weaknesses", e.target.value)}
                     placeholder="E.g. Communication"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-800 outline-none focus:border-gray-400 focus:bg-white"
+                    className="w-full rounded-xl border border-[#E4E9E4] bg-[#F8FBF5] px-4 py-2 text-sm text-[#2C3E2F] outline-none focus:border-[#8FB978] focus:bg-white"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+            <div className="px-6 py-4 bg-[#F8FBF5] border-t border-[#EEF2ED] flex items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setEditingUserId(null)}
-                className="px-5 py-2.5 rounded-xl text-sm font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-100 transition-colors"
+                className="px-5 py-2.5 rounded-xl text-sm font-bold text-[#6B7D6B] bg-white border border-[#E4E9E4] hover:bg-[#F3F8EE] transition-colors"
               >
                 Cancel
               </button>
@@ -432,7 +433,7 @@ const HrOnbording = () => {
                 type="button"
                 onClick={() => handleUpdateSubmit(editingUserId)}
                 disabled={updateMutation.isPending}
-                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-[#59526F] hover:bg-[#4A4F63] disabled:opacity-60 transition-colors"
+                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-[#8FB978] hover:bg-[#7FA867] disabled:opacity-60 transition-colors"
               >
                 {updateMutation.isPending ? "Saving..." : "Save Progress"}
               </button>
@@ -445,8 +446,8 @@ const HrOnbording = () => {
 };
 
 // Stat Bubble (Ribbon-like design from previous)
-const StatBubble = ({ label, value, badgeColor = "bg-[#A4CD3C]" }: { label: string; value: string | number, badgeColor?: string }) => (
-  <div className="relative bg-white pt-7 pb-4 px-3 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center">
+const StatBubble = ({ label, value, badgeColor = "bg-[#8FB978]" }: { label: string; value: string | number, badgeColor?: string }) => (
+  <div className="relative bg-white pt-7 pb-4 px-3 rounded-2xl shadow-sm border border-[#E4E9E4] flex flex-col items-center justify-center">
     <div 
       className={`absolute top-0 left-4 ${badgeColor} text-white text-[10px] font-bold px-2 py-0.5`}
       style={{ 
@@ -458,24 +459,24 @@ const StatBubble = ({ label, value, badgeColor = "bg-[#A4CD3C]" }: { label: stri
         justifyContent: 'center' 
       }}
     />
-    <div className="text-xl font-extrabold text-[#59526F]">{value}</div>
-    <div className="mt-1 text-[11px] font-bold uppercase tracking-wide text-gray-400">{label}</div>
+    <div className="text-xl font-extrabold text-[#2C3E2F]">{value}</div>
+    <div className="mt-1 text-[11px] font-bold uppercase tracking-wide text-[#9CAD9B]">{label}</div>
   </div>
 );
 
 const InfoRow = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
-  <div className="flex items-center gap-2 text-sm text-gray-500">
-    <span className="text-[#A4CD3C]">{icon}</span>
+  <div className="flex items-center gap-2 text-sm text-[#6B7D6B]">
+    <span className="text-[#8FB978]">{icon}</span>
     <span className="truncate">{text}</span>
   </div>
 );
 
 // MiniCard with truncated text
 const MiniCard = ({ label, value }: { label: string; value: string }) => (
-  <div className="rounded-xl border border-gray-100 bg-gray-50 p-3">
-    <p className="text-[10px] font-bold uppercase tracking-wide text-gray-400">{label}</p>
+  <div className="rounded-xl border border-[#E4E9E4] bg-[#F8FBF5] p-3">
+    <p className="text-[10px] font-bold uppercase tracking-wide text-[#9CAD9B]">{label}</p>
     <p 
-      className="mt-1 text-xs font-medium text-[#59526F] line-clamp-2" 
+      className="mt-1 text-xs font-medium text-[#2C3E2F] line-clamp-2" 
       title={value} // Title added so hover shows full text
     >
       {value}

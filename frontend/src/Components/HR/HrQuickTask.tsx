@@ -68,7 +68,7 @@ const getInitials = (name?: string) =>
     .join('')
     .toUpperCase() ?? '?';
 
-const avatarPalette = ['bg-slate-700', 'bg-indigo-600', 'bg-teal-600', 'bg-amber-600', 'bg-violet-600', 'bg-cyan-600'];
+const avatarPalette = ['bg-[#8FB978]', 'bg-[#7FA867]', 'bg-[#DDEAC5]', 'bg-[#6B7D6B]', 'bg-[#D7C58A]', 'bg-[#A8B88B]'];
 const getAvatarColor = (name?: string) => {
   const idx = (name?.charCodeAt(0) ?? 0) % avatarPalette.length;
   return avatarPalette[idx];
@@ -206,46 +206,46 @@ const HrQuickTask: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-800">Quick Task</h1>
-          <p className="text-sm text-gray-500 mt-1">Assign tasks to your team and track their progress.</p>
+          <p className="text-sm text-[#6B7D6B] mt-1">Assign tasks to your team and track their progress.</p>
         </div>
       </div>
 
       {/* Assign Task Form */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+      <div className="bg-white rounded-2xl border border-[#E4E9E4] p-6 shadow-sm">
         <div className="flex items-center gap-2.5 mb-5">
-          <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+          <div className="w-8 h-8 rounded-lg bg-[#E8F2D9] flex items-center justify-center text-[#8FB978]">
             <FiClipboard size={16} />
           </div>
-          <h2 className="text-base font-bold text-gray-800">Assign a new task</h2>
+          <h2 className="text-base font-bold text-[#2C3E2F]">Assign a new task</h2>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-4" noValidate>
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-gray-500 mb-1.5">Task title</label>
+            <label className="block text-xs font-semibold text-[#6B7D6B] mb-1.5">Task title</label>
             <input
               type="text"
               placeholder="e.g. Prepare Q3 attendance report"
-              className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all"
+              className="w-full px-3.5 py-2.5 bg-[#F8FBF5] border border-[#E4E9E4] rounded-lg text-sm text-[#2C3E2F] placeholder-[#9CAD9B] focus:outline-none focus:border-[#8FB978] focus:ring-2 focus:ring-[#DDEAC5] focus:bg-white transition-all"
               {...register('title', { required: 'Title is required' })}
             />
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-gray-500 mb-1.5">Description</label>
+            <label className="block text-xs font-semibold text-[#6B7D6B] mb-1.5">Description</label>
             <textarea
               rows={3}
               placeholder="Task details..."
-              className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all resize-none"
+              className="w-full px-3.5 py-2.5 bg-[#F8FBF5] border border-[#E4E9E4] rounded-lg text-sm text-[#2C3E2F] placeholder-[#9CAD9B] focus:outline-none focus:border-[#8FB978] focus:ring-2 focus:ring-[#DDEAC5] focus:bg-white transition-all resize-none"
               {...register('description', { required: 'Description is required' })}
             />
             {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1.5">Assign to</label>
+            <label className="block text-xs font-semibold text-[#6B7D6B] mb-1.5">Assign to</label>
             <select
-              className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all"
+              className="w-full px-3.5 py-2.5 bg-[#F8FBF5] border border-[#E4E9E4] rounded-lg text-sm text-[#2C3E2F] focus:outline-none focus:border-[#8FB978] focus:ring-2 focus:ring-[#DDEAC5] focus:bg-white transition-all"
               {...register('assignedTo', { required: 'Please select an employee' })}
             >
               <option value="">Select employee</option>
@@ -262,10 +262,10 @@ const HrQuickTask: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1.5">Due date</label>
+            <label className="block text-xs font-semibold text-[#6B7D6B] mb-1.5">Due date</label>
             <input
               type="date"
-              className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800 focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all"
+              className="w-full px-3.5 py-2.5 bg-[#F8FBF5] border border-[#E4E9E4] rounded-lg text-sm text-[#2C3E2F] focus:outline-none focus:border-[#8FB978] focus:ring-2 focus:ring-[#DDEAC5] focus:bg-white transition-all"
               {...register('dueDate', { required: 'Due date is required' })}
             />
             {errors.dueDate && <p className="text-red-500 text-xs mt-1">{errors.dueDate.message}</p>}
@@ -275,7 +275,7 @@ const HrQuickTask: React.FC = () => {
             <button
               type="submit"
               disabled={createMutation.isPending}
-              className="flex items-center gap-2 bg-slate-700 hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all"
+              className="flex items-center gap-2 bg-[#8FB978] hover:bg-[#7FA867] disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:shadow transition-all"
             >
               <FiClipboard size={16} />
               {createMutation.isPending ? 'Assigning...' : 'Assign task'}
@@ -285,10 +285,10 @@ const HrQuickTask: React.FC = () => {
       </div>
 
       {/* Task List Table */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-[#E4E9E4] shadow-sm overflow-hidden">
+        <div className="px-6 py-5 border-b border-[#EEF2ED]">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold text-gray-800">All tasks</h2>
+            <h2 className="text-base font-bold text-[#2C3E2F]">All tasks</h2>
             {overdueCount > 0 && (
               <span className="flex items-center gap-1.5 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-full">
                 <FiAlertTriangle size={12} />
@@ -305,12 +305,12 @@ const HrQuickTask: React.FC = () => {
                 onClick={() => setStatusFilter(key)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                   statusFilter === key
-                    ? 'bg-slate-700 border-slate-700 text-white'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-slate-300 hover:bg-gray-50'
+                    ? 'bg-[#8FB978] border-[#8FB978] text-white'
+                    : 'bg-white border-[#E4E9E4] text-[#6B7D6B] hover:border-[#DDEAC5] hover:bg-[#F3F8EE]'
                 }`}
               >
                 {key === 'all' ? 'All' : key === 'in-progress' ? 'In Progress' : key.charAt(0).toUpperCase() + key.slice(1)}
-                <span className={`ml-1.5 ${statusFilter === key ? 'text-white/70' : 'text-gray-400'}`}>
+                <span className={`ml-1.5 ${statusFilter === key ? 'text-white/70' : 'text-[#9CAD9B]'}`}>
                   {filterCounts[key]}
                 </span>
               </button>
@@ -319,12 +319,12 @@ const HrQuickTask: React.FC = () => {
         </div>
 
         {isLoading ? (
-          <div className="py-16 flex flex-col items-center gap-2 text-gray-400">
-            <div className="w-6 h-6 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+          <div className="py-16 flex flex-col items-center gap-2 text-[#9CAD9B]">
+            <div className="w-6 h-6 border-2 border-[#DDEAC5] border-t-[#8FB978] rounded-full animate-spin" />
             <p className="text-sm">Loading tasks...</p>
           </div>
         ) : filteredTasks.length === 0 ? (
-          <div className="py-16 flex flex-col items-center gap-2 text-gray-400">
+          <div className="py-16 flex flex-col items-center gap-2 text-[#9CAD9B]">
             <FiInbox size={28} />
             <p className="text-sm">No tasks found for this filter.</p>
           </div>
@@ -332,12 +332,12 @@ const HrQuickTask: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="text-left bg-gray-50 border-b border-gray-200">
-                  <th className="py-3 px-6 font-semibold text-gray-500 text-xs uppercase tracking-wide">Task</th>
-                  <th className="py-3 px-4 font-semibold text-gray-500 text-xs uppercase tracking-wide">Assigned To</th>
-                  <th className="py-3 px-4 font-semibold text-gray-500 text-xs uppercase tracking-wide">Due Date</th>
-                  <th className="py-3 px-4 font-semibold text-gray-500 text-xs uppercase tracking-wide">Status</th>
-                  <th className="py-3 px-6 font-semibold text-gray-500 text-xs uppercase tracking-wide text-right">Action</th>
+                <tr className="text-left bg-[#F8FBF5] border-b border-[#E4E9E4]">
+                  <th className="py-3 px-6 font-semibold text-[#6B7D6B] text-xs uppercase tracking-wide">Task</th>
+                  <th className="py-3 px-4 font-semibold text-[#6B7D6B] text-xs uppercase tracking-wide">Assigned To</th>
+                  <th className="py-3 px-4 font-semibold text-[#6B7D6B] text-xs uppercase tracking-wide">Due Date</th>
+                  <th className="py-3 px-4 font-semibold text-[#6B7D6B] text-xs uppercase tracking-wide">Status</th>
+                  <th className="py-3 px-6 font-semibold text-[#6B7D6B] text-xs uppercase tracking-wide text-right">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -350,16 +350,16 @@ const HrQuickTask: React.FC = () => {
                   return (
                     <tr
                       key={task._id}
-                      className={`border-b border-gray-100 last:border-0 transition-colors ${
-                        overdue ? 'bg-rose-50/70 hover:bg-rose-50' : 'hover:bg-gray-50/70'
+                      className={`border-b border-[#EEF2ED] last:border-0 transition-colors ${
+                        overdue ? 'bg-rose-50/70 hover:bg-rose-50' : 'hover:bg-[#F3F8EE]'
                       }`}
                     >
                       <td className="py-4 px-6 align-top">
                         <div className="flex items-start gap-2.5">
                           {overdue && <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />}
                           <div>
-                            <p className={`font-semibold ${overdue ? 'text-rose-900' : 'text-gray-800'}`}>{task.title}</p>
-                            <p className="text-gray-500 text-xs mt-0.5 max-w-xs line-clamp-1">{task.description}</p>
+                            <p className={`font-semibold ${overdue ? 'text-rose-900' : 'text-[#2C3E2F]'}`}>{task.title}</p>
+                            <p className="text-[#6B7D6B] text-xs mt-0.5 max-w-xs line-clamp-1">{task.description}</p>
                             {task.status === 'completed' && task.completionNote && (
                               <p className="text-emerald-700 text-xs mt-1.5 bg-emerald-50 border border-emerald-100 rounded px-2 py-1 max-w-xs">
                                 <span className="font-semibold">Note: </span>
@@ -380,15 +380,15 @@ const HrQuickTask: React.FC = () => {
                             {getInitials(task.assignedTo?.name)}
                           </div>
                           <div>
-                            <p className="font-medium text-gray-800">{task.assignedTo?.name}</p>
-                            <p className="text-xs text-gray-500">{task.assignedTo?.department}</p>
+                            <p className="font-medium text-[#2C3E2F]">{task.assignedTo?.name}</p>
+                            <p className="text-xs text-[#6B7D6B]">{task.assignedTo?.department}</p>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-4 px-4 align-top">
-                        <p className={`font-medium ${overdue ? 'text-rose-700' : 'text-gray-700'}`}>{dueInfo.formatted}</p>
-                        <p className={`text-xs mt-0.5 ${overdue ? 'text-rose-500 font-medium' : 'text-gray-400'}`}>
+                        <p className={`font-medium ${overdue ? 'text-rose-700' : 'text-[#2C3E2F]'}`}>{dueInfo.formatted}</p>
+                        <p className={`text-xs mt-0.5 ${overdue ? 'text-rose-500 font-medium' : 'text-[#9CAD9B]'}`}>
                           {dueInfo.relative}
                         </p>
                       </td>
@@ -417,7 +417,7 @@ const HrQuickTask: React.FC = () => {
                         <button
                           onClick={() => deleteMutation.mutate(task._id)}
                           disabled={deletingId === task._id}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 hover:bg-red-50 disabled:opacity-50 px-3 py-1.5 rounded-lg transition-colors"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6B7D6B] hover:text-red-600 border border-[#E4E9E4] hover:border-red-200 hover:bg-red-50 disabled:opacity-50 px-3 py-1.5 rounded-lg transition-colors"
                         >
                           <FiTrash2 size={13} />
                           {deletingId === task._id ? 'Removing...' : 'Remove'}

@@ -58,21 +58,21 @@ const HrHome = () => {
   ];
 
   return (
-    <div className="poppins-regular flex h-screen bg-[#C4DDA0] font-sans overflow-hidden">
+    <div className="poppins-regular flex h-screen bg-[#F2F8EC] font-sans overflow-hidden text-[#2C3E2F]">
       
       {/* Sidebar */}
       <aside 
-        className={`bg-white border-r border-gray-100 transition-all duration-300 ease-in-out flex flex-col z-20 shrink-0 ${
+        className={`bg-white border-r border-[#E4E9E4] transition-all duration-300 ease-in-out flex flex-col z-20 shrink-0 shadow-[0_0_24px_rgba(44,62,47,0.04)] ${
           isSidebarOpen ? 'w-64' : 'w-20'
         }`}
       >
         {/* Top Logo Area */}
-        <div className="h-20 flex items-center justify-center border-b border-gray-100 shrink-0">
+        <div className="h-20 flex items-center justify-center border-b border-[#EEF2ED] shrink-0">
           <div className="flex items-center gap-2 cursor-pointer overflow-hidden">
-            <div className="w-10 h-10 rounded-full bg-[#E8EBF2] flex items-center justify-center text-[#59526F] shrink-0">
+            <div className="w-10 h-10 rounded-full bg-[#E8F2D9] flex items-center justify-center text-[#8FB978] shrink-0">
               <FiGrid size={20}/>
             </div>
-            <span className={`font-bold text-lg text-[#59526F] transition-all duration-300 ${isSidebarOpen ? 'opacity-100 w-auto ml-2' : 'opacity-0 w-0 overflow-hidden'}`}>
+            <span className={`font-bold text-lg text-[#2C3E2F] transition-all duration-300 ${isSidebarOpen ? 'opacity-100 w-auto ml-2' : 'opacity-0 w-0 overflow-hidden'}`}>
               Genesys HRM
             </span>
           </div>
@@ -90,8 +90,8 @@ const HrHome = () => {
                   isSidebarOpen ? 'w-[90%] px-4 py-3 rounded-lg' : 'w-12 h-12 justify-center rounded-xl'
                 } ${
                   isActive 
-                    ? 'bg-[#F1F1F1] text-[#4A4F63] shadow-sm font-semibold border-r-2 border-[#4A4F63]' 
-                    : 'text-[#8A90A5] hover:bg-[#F9FAFC] hover:text-[#4A4F63]'
+                    ? 'bg-[#E8F2D9] text-[#2C3E2F] shadow-sm font-semibold border-r-2 border-[#8FB978]' 
+                      : 'text-[#6B7D6B] hover:bg-[#F3F8EE] hover:text-[#2C3E2F]'
                 }`}
                 title={!isSidebarOpen ? item.label : undefined}
               >
@@ -110,9 +110,9 @@ const HrHome = () => {
         </div>
 
         {/* Logout Button */}
-        <div onClick={() => logOut()} className="p-4 border-t border-gray-100 shrink-0 flex flex-col items-center">
+        <div onClick={() => logOut()} className="p-4 border-t border-[#EEF2ED] shrink-0 flex flex-col items-center">
           <button 
-            className={`flex items-center w-full cursor-pointer transition-all duration-200 text-rose-500 hover:bg-rose-50 hover:text-rose-600 ${
+            className={`flex items-center w-full cursor-pointer transition-all duration-200 text-[#B15E5E] hover:bg-[#F9ECEC] hover:text-[#9E4343] ${
               isSidebarOpen ? 'px-4 py-3 rounded-lg' : 'w-12 h-12 justify-center rounded-xl shadow-sm'
             }`}
             title={!isSidebarOpen ? "Logout" : undefined}
@@ -133,22 +133,22 @@ const HrHome = () => {
       <div className="flex-1 flex flex-col min-w-0">
         
         {/* Navbar (Updated: No background, no border, added live clock) */}
-        <header className="h-20 border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-10">
+        <header className="h-20 border-b border-[#E4E9E4] bg-[#F7FBF3]/90 backdrop-blur flex items-center justify-between px-6 shrink-0 z-10">
           {/* Left Side: Toggle & Time */}
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
-              className="p-2 rounded-lg text-[#8A90A5] hover:bg-gray-200 hover:text-[#4A4F63] transition-colors focus:outline-none"
+              className="p-2 rounded-lg text-[#6B7D6B] hover:bg-[#E8F2D9] hover:text-[#2C3E2F] transition-colors focus:outline-none"
             >
               <FiMenu size={24} />
             </button>
 
             <div className="hidden md:flex flex-col ml-2">
-              <span className="text-[16px] font-bold text-white">
+              <span className="text-[16px] font-bold text-[#2C3E2F]">
                 HR Dashboard
               </span>
-              <span className="text-[13px] font-medium text-[#8A90A5]">
-                {formattedDate} <span className="mx-1">|</span> <span className="text-white">{formattedTime}</span>
+              <span className="text-[13px] font-medium text-[#6B7D6B]">
+                {formattedDate} <span className="mx-1 text-[#D0D8CF]">|</span> <span className="text-[#8FB978]">{formattedTime}</span>
               </span>
             </div>
           </div>
@@ -156,22 +156,22 @@ const HrHome = () => {
           {/* Right Side: Icons & Profile */}
           <div className="flex items-center gap-6">
             
-            <div className="flex items-center gap-4 border-l border-gray-300 pl-6">
-              <button className="text-[#8A90A5] hover:text-[#4A4F63] transition-colors">
+            <div className="flex items-center gap-4 border-l border-[#DCE3DA] pl-6">
+              <button className="text-[#6B7D6B] hover:text-[#2C3E2F] transition-colors">
                 <FiMessageCircle size={20}/>
               </button>
-              <button className="relative text-[#8A90A5] hover:text-[#4A4F63] transition-colors">
+              <button className="relative text-[#6B7D6B] hover:text-[#2C3E2F] transition-colors">
                 <FiBell size={20} />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-[#F1F1F1]"></span>
+                <span className="absolute top-0 right-0 w-2 h-2 bg-[#8FB978] rounded-full border border-[#F7FBF3]"></span>
               </button>
-              <button className="text-[#8A90A5] hover:text-[#4A4F63] transition-colors">
+              <button className="text-[#6B7D6B] hover:text-[#2C3E2F] transition-colors">
                 <FiUser size={20} />
               </button>
             </div>
 
             {/* User Profile */}
             <div className="flex items-center gap-3 pl-2">
-              <div className="w-10 h-10 rounded-full bg-[#E8EBF2] text-[#4A4F63] flex items-center justify-center font-bold shadow-sm cursor-pointer hover:bg-[#dce1ed] transition-colors">
+              <div className="w-10 h-10 rounded-full bg-[#E8F2D9] text-[#2C3E2F] flex items-center justify-center font-bold shadow-sm cursor-pointer hover:bg-[#DDEAC5] transition-colors border border-[#DDEAC5]">
                 {user?.name ? user.name.charAt(0).toUpperCase() : <FiUser size={18} />}
               </div>
             </div>
@@ -179,7 +179,7 @@ const HrHome = () => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto px-8 pb-8 bg-[#D2E6B8]">
+        <main className="flex-1 overflow-auto px-8 pb-8 bg-[#F2F8EC]">
           {/* Outlet for dynamic routes */}
           <Outlet />
         </main>
