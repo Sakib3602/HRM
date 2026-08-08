@@ -9,7 +9,7 @@ const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,                                   
   secure: process.env.NODE_ENV === "production",     // প্রোডাকশনে শুধু HTTPS এ পাঠাবে
   sameSite: "lax" as const,                          // CSRF প্রোটেকশন
-  maxAge: 7 * 24 * 60 * 60 * 1000,                   // ৭ দিন
+  maxAge: 1 * 24 * 60 * 60 * 1000,                   // 1 দিন
   path: "/api/auth",                                 // শুধু auth route গুলাতেই কুকি যাবে
 };
 
@@ -38,8 +38,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const { email, password } = req.body;
 
-     console.log('Login attempt - email:', JSON.stringify(email));
-    console.log('Login attempt - password:', JSON.stringify(password));
+    
 
     
     if (!email || !password || typeof email !== "string" || typeof password !== "string") {

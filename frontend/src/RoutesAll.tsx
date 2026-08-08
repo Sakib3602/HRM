@@ -12,6 +12,7 @@ import EmPrivateRoute from "./Components/Employee/EmPrivate/EmPrivateRoute";
 import EmDashboard from "./Components/Employee/EmDashboard";
 import HrDocuments from "./Components/HR/HrDocuments";
 import HrMeetings from "./Components/HR/HrMeetings";
+import HrInterview from "./Components/HR/HrInterview";
 
 const RoutesAll = () => {
   return (
@@ -33,6 +34,7 @@ const RoutesAll = () => {
         <Route path="onboarding" element={<HrOnbording />} />
         <Route path="hr-documents" element={<HrDocuments />} />
         <Route path="hr-meetings" element={<HrMeetings />} />
+        <Route path="hr-interview" element={<HrInterview />} />
       </Route>
 
       <Route

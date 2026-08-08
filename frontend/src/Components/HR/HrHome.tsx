@@ -49,7 +49,7 @@ const HrHome = () => {
     { id: 'manage_employees', icon: <FiUsers size={20} />, label: 'Manage Employees', url: '/dashboard/hr/manage-employees' },
     { id: 'onboarding', icon: <FiUserPlus size={20} />, label: 'Onboarding', url: '/dashboard/hr/onboarding' },
     { id: 'employee_record', icon: <FiFolder size={20} />, label: 'Employee Record', url: '/dashboard/hr/employee-record' },
-    { id: 'interview_portal', icon: <FiMonitor size={20} />, label: 'Interview Portal', url: '/dashboard/hr/interview-portal' },
+    { id: 'interview_portal', icon: <FiMonitor size={20} />, label: 'Interview Portal', url: '/dashboard/hr/hr-interview' },
     { id: 'hr_documents', icon: <FiFileText size={20} />, label: 'HR Documents', url: '/dashboard/hr/hr-documents' },
     { id: 'meeting', icon: <FiCalendar size={20} />, label: 'Meeting & Announcements', url: '/dashboard/hr/hr-meetings' },
     { id: 'office_activity', icon: <FiActivity size={20} />, label: 'Office Activity', url: '/dashboard/hr/office-activity' },
